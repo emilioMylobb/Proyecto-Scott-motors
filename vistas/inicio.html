@@ -1,0 +1,72 @@
+<div class="hero-gallery">
+    
+    <div class="hero-gallery-main" 
+         ng-style="{'background-image': 'url(' + imagenPrincipal + ')'}">
+    </div>
+
+    <div class="hero-gallery-thumbnails">
+        
+        <img ng-repeat="auto in automoviles"
+             ng-src="{{auto.imagenUrl}}"
+             class="hero-gallery-thumb"
+             ng-click="cambiarImagenPrincipal(auto.imagenUrl)"
+             ng-class="{active: auto.imagenUrl === imagenPrincipal}"
+             alt="Miniatura {{auto.modelo}}">
+    </div>
+</div>
+
+
+<!--Marcas (Grid) -->
+<div class="container brand-grid">
+    <h3 class="text-center">Nuestras Marcas</h3>
+    <div class="row">
+        <div class="col-md-3 col-sm-6" ng-repeat="marca in marcas">
+            <div class="brand-card" ng-click="filtroMarca = marca.nombre">
+                <img ng-src="{{marca.logoUrl}}" alt="{{marca.nombre}}" class="brand-logo">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container modern-search">
+    <div class="text-center">
+        <h3>Encuentra Tu Vehículo Ideal</h3>
+    </div>
+    <div class="row" style="padding: 0 15px;">
+        <div class="col-md-6 col-sm-6 filter-group">
+            <label for="filtroMarca">MARCA</label>
+            <select id="filtroMarca" class="form-control" ng-model="filtroMarca">
+                <option value="">-- Todas las Marcas --</option>
+                <option ng-repeat="marca in marcas" value="{{marca.nombre}}">{{marca.nombre}}</option>
+            </select>
+        </div>
+        <div class="col-md-6 col-sm-6 filter-group">
+            <label for="filtroAnio">AÑO</label>
+            <input type="text" id="filtroAnio" class="form-control" ng-model="filtroAnio" placeholder="Ej: 2023">
+        </div>
+    </div>
+</div>
+
+<div class="container listado-autos-grid" style="width: 90%;">
+    <h3 class="text-center">Nuestro Inventario Completo</h3>
+    <div class="row">
+        <div class="col-md-4 col-sm-6" ng-repeat="auto in automoviles | filter:{marca: filtroMarca, anio: filtroAnio}">
+            <div class="panel panel-default auto-card">
+                <a href="#/automovil/{{auto.id}}">
+                    <img ng-src="{{auto.imagenUrl}}" alt="{{auto.marca}} {{auto.modelo}}">
+                </a>
+                <div class="panel-body">
+                    <h3 class="panel-title"><a href="#/automovil/{{auto.id}}">{{auto.marca}} {{auto.modelo}}</a></h3>
+                    <p>Año: {{auto.anio}}</p>
+                    <h4>Precio: {{auto.precio | currency:'$'}} MXN</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 text-center" ng-if="(automoviles | filter:{marca: filtroMarca, anio: filtroAnio}).length === 0">
+            <div class="alert alert-info">
+                No se encontraron vehículos que coincidan con los filtros.
+            </div>
+        </div>
+    </div>
+</div>

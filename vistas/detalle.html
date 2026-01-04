@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="page-header">
+        <h1>{{auto.marca}} {{auto.modelo}}</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+
+            <h3>Galería de Fotos</h3>
+            
+            <img ng-src="{{imagenPrincipal}}" class="img-responsive img-thumbnail" style="width:100%; margin-bottom: 15px; height: 400px; object-fit: cover;">
+            
+            <div class="row">
+                <div class="col-xs-3" ng-repeat="img in auto.galeriaImagenes">
+                    <a href="" ng-click="cambiarImagenPrincipal(img)">
+                        <img ng-src="{{img}}" class="img-responsive galeria-thumbnail">
+                    </a>
+                </div>
+            </div>
+            <hr>
+
+            <h3>Visor 3D Interactivo</h3>
+            <p>Usa el mouse para rotar, la rueda para zoom y clic derecho para mover.</p>
+            <p>(El modelo solo es una muestra y su color puede variar)</p>
+            
+            <div class="visor-container">
+                <iframe 
+                    id="api-frame" 
+                    allow="autoplay; fullscreen; vr" 
+                    mozallowfullscreen="true" 
+                    webkitallowfullscreen="true">
+                </iframe>
+            </div>
+            
+            <button class="btn btn-primary" ng-click="moverCamara()" style="margin-top: 15px;">
+                Reiniciar Vista 3D
+            </button>
+        </div>
+
+       <div class="col-md-4">
+            <h3>Detalles del Vehículo</h3>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Marca:</strong> {{auto.marca}}</li>
+                <li class="list-group-item"><strong>Modelo:</strong> {{auto.modelo}}</li>
+                <li class="list-group-item"><strong>Año:</strong> {{auto.anio}}</li>
+                <li class="list-group-item"><strong>Color:</strong> {{auto.color}} 
+                    <span class="color-swatch pull-right" ng-style="{'background-color': auto.colorHex}"></span>
+                </li>
+                <li class="list-group-item"><strong>Precio:</strong> {{auto.precio | currency:'$'}} MXN</li>
+            </ul>
+
+            <!-- BOTÓN DE COTIZAR  -->
+            <a href="#/contacto" class="btn btn-danger btn-lg btn-block" style="margin-top: 25px; margin-bottom: 15px; font-size: 20px; font-weight: bold; padding: 15px;">
+                COTIZAR
+            </a>
+        </div>
+    </div>
+</div>

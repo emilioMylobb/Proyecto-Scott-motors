@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="scottMotorsApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scott Motors</title>
+
+    <link rel="icon" href="img/Scott Motors Logo black.png" type="image/png">
+
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+    <style>
+        /* --- TIPOGRAFÍA --- */
+        body { 
+            font-family: 'Roboto', sans-serif; /* Tgeneral  */
+            font-size: 16px;
+            color: #333;
+        } 
+
+        /*  importantes  */
+        h1, h2, h3, h4, h5, h6, .navbar-brand, .btn, .panel-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700; 
+            letter-spacing: -0.5px; 
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        .navbar-floating {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+            border: none;
+            z-index: 1000;
+            min-height: 70px;
+        }
+
+        .navbar-floating .navbar-brand {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .navbar-floating .navbar-brand img {
+            height: 180px;
+            margin: 0;
+        }
+
+        .navbar-floating .navbar-nav {
+            margin-left: 280px;
+        }
+
+        .navbar-floating .navbar-nav>li>a {
+            padding-top: 25px;
+            padding-bottom: 25px;
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-floating .navbar-toggle {
+            margin-top: 20px;
+            border-color: #fff;
+            margin-right: 280px;
+        }
+
+        .navbar-floating .navbar-toggle .icon-bar {
+            background-color: #fff;
+        }
+
+        .navbar-inverse .navbar-brand img {
+            height: 40px;
+            margin-top: -10px;
+            display: inline-block;
+        }
+
+
+        .visor-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .visor-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .hero-gallery {
+            width: 100%;
+            height: 800px;
+            margin-bottom: -30px;
+            position: relative;
+            background-color: #222;
+        }
+
+        .hero-gallery-main {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.3s ease-in-out;
+        }
+
+        .hero-gallery-thumbnails {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.25);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .hero-gallery-thumb {
+            width: 100px;
+            height: 65px;
+            object-fit: cover;
+            border: 2px solid #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.2s;
+        }
+
+        .hero-gallery-thumb:hover,
+        .hero-gallery-thumb.active {
+            opacity: 1;
+            border-color: #337ab7;
+            transform: scale(1.05);
+        }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 30px 0;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .filter-group .form-control {
+            border-radius: 5px;
+        }
+
+        .listado-autos-grid {
+            margin-top: 40px;
+        }
+
+        .auto-card {
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+            margin-bottom: 30px;
+        }
+
+        .auto-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .auto-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .auto-card .panel-body {
+            padding: 15px;
+        }
+
+        .auto-card .panel-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .auto-card h4 {
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .galeria-thumbnail {
+            width: 100%;
+            height: 75px;
+            object-fit: cover;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .galeria-thumbnail:hover {
+            border-color: #337ab7;
+        }
+
+        .brand-grid {
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .brand-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand-logo {
+            max-height: 80px;
+            max-width: 100%;
+        }
+        
+
+        /* --- ESTILOS NUEVOS DEL BUSCADOR --- */
+        .modern-search {
+            background-color: #fff;
+            padding: 30px 0;
+            margin-top: 60px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .modern-search h3 {
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+        /* Línea roja debajo del título */
+        .modern-search h3::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background-color: #d9534f;
+            margin: 10px auto 0;
+        }
+        .modern-search label {
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .modern-search .form-control {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            height: 45px;
+            font-size: 14px;
+            box-shadow: none;
+        }
+        /* --- FIN ESTILOS BUSCADOR --- */
+        
+        .listado-autos-grid {
+            margin-top: 50px;
+        }
+        /* Línea roja también para el título de inventario */
+        .listado-autos-grid h3.text-center {
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .listado-autos-grid h3.text-center::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background-color: #d9534f;
+            margin: 10px auto 0;
+        }
+
+        .auto-card {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 30px; 
+            border-radius: 8px;
+            overflow: hidden; 
+        }
+        .auto-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .auto-card img {
+            width: 100%;
+            height: 220px; 
+            object-fit: cover;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            transition: transform 0.5s;
+        }
+        .auto-card:hover img {
+            transform: scale(1.05); 
+        }
+        .auto-card .panel-body {
+            padding: 20px;
+            background: #fff;
+            position: relative;
+            z-index: 1;
+        }
+        .auto-card .panel-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #222;
+        }
+        .auto-card .panel-title a {
+            color: #222;
+            text-decoration: none;
+        }
+        .auto-card p {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .auto-card h4 {
+            color: #d9534f; 
+            font-weight: 800;
+            margin-top: 15px;
+            font-size: 1.3em;
+        }
+
+        .galeria-thumbnail {
+            width: 100%;
+            height: 80px; 
+            object-fit: cover;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+        .galeria-thumbnail:hover {
+            border-color: #d9534f; 
+            opacity: 0.8;
+        }
+
+        .visor-container {
+            position: relative;
+            padding-bottom: 56.25%; 
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .visor-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        footer {
+            background-color: #111;
+            color: #fff;
+            text-align: center;
+            padding: 40px 10px;
+            margin-top: 50px;
+            border-top: 4px solid #d9534f;
+        }
+        .footer-icons {
+            margin-bottom: 20px;
+        }
+        .footer-icons a {
+            color: #fff;
+            margin: 0 15px;
+            font-size: 24px;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .footer-icons a:hover {
+            color: #fff;
+            background-color: #d9534f;
+            transform: translateY(-3px);
+        }
+        .footer-text {
+            font-size: 14px;
+            opacity: 0.6;
+            font-family: 'Roboto', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body class="bg-light" ng-controller="MainCtrl" ng-style="bodyStyle">
+
+    <nav class="navbar" ng-class="navbarClass">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/">
+                    <img src="img/Scott Motors Logo Withe.png" alt="Scott Motors">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/">Inicio</a></li>
+                    <li><a href="#/mantenimiento">Mantenimiento</a></li>
+                    <li><a href="#/contacto">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div ng-view></div>
+
+    <footer>
+        <div class="footer-icons">
+            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:tucorreo@ejemplo.com" title="Correo electrónico"><i class="fas fa-envelope"></i></a>
+        </div>
+
+        <div class="footer-text">
+            Derechos reservados © Scott Motors 2025
+        </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
+    
+    <script src="app.js"></script>
+</body>
+</html>
